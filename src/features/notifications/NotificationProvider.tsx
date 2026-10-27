@@ -10,6 +10,7 @@ import {
   fetchNotifications, markConversationNotificationsRead, markNotificationRead, safeNotificationUrl,
   type AppNotification,
 } from './api';
+import { syncPushSubscription } from '@/lib/push';
 import { playNotificationSound } from './sound';
 import styles from './Notifications.module.css';
 
@@ -48,6 +49,9 @@ export function NotificationProvider() {
   useEffect(() => {
     if (q.data) q.data.forEach((n) => shown.current.add(n.id));
   }, [q.data]);
+
+  // Re-register this device for the signed-in account (silent; never prompts).
+  useEffect(() => { if (uid) void syncPushSubscription(); }, [uid]);
 
   const activeConversation = location.pathname.startsWith('/app/chats/') ? location.pathname.split('/')[3] : null;
   const activeRef = useRef<string | null>(null);

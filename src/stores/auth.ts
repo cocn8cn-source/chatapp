@@ -15,7 +15,10 @@ export function initAuth(): () => void {
     if (next !== currentUser) { queryClient.clear(); currentUser = next; }
     useAuth.setState({ session, ready: true });
   };
-  void supabase.auth.getSession().then(({ data }) => apply(data.session));
+  // If the session lookup stalls (offline with an expired token, slow storage), do not leave
+  // the installed app on a blank "Loading…" screen forever: fall back to signed-out routing.
+  const stall = window.setTimeout(() => { if (!useAuth.getState().ready) useAuth.setState({ ready: true }); }, 8000);
+  void supabase.auth.getSession().then(({ data }) => apply(data.session)).finally(() => window.clearTimeout(stall));
   const { data } = supabase.auth.onAuthStateChange((_e, session) => apply(session));
-  return () => data.subscription.unsubscribe();
+  return () => { window.clearTimeout(stall); data.subscription.unsubscribe(); };
 }

@@ -87,7 +87,7 @@ Unit tests cover: call state machine (9), theme persistence, message cache dedup
 - Rebuilt the welcome page as an editorial two-column onboarding screen: branded header, install chip, yellow-highlighted headline, feature points, original decorative chat composition (CSS/SVG, no stock images), install note and footer.
 - Rebuilt the auth layout as a split stage: charcoal brand aside with original geometry, theme control, focused form card, mobile collapse.
 - Added a **Links** tab to shared content: RLS-scoped recent messages with links, safe URL extraction, dedupe, external-link handling and a test suite.
-- Made an out-of-date database actionable instead of mysterious: `src/lib/errors.ts` detects `PGRST202`/`PGRST205`, and Chats, People and Settings explain that migrations `0001` → `0006` must be applied, without exposing a dead end. Ordinary network errors still show only a retry.
+- Made an out-of-date database actionable instead of mysterious: `src/lib/errors.ts` detects `PGRST202`/`PGRST205`, and Chats, People and Settings explain that migrations `0001` → `0007` must be applied, without exposing a dead end. Ordinary network errors still show only a retry.
 - Fixed the Blocked-people section on People, which could sit on “Loading…” forever because its error branch was missing.
 - Corrected the landmark structure: the signed-in shell now exposes a single `main` (focusable skip-link target) and the conversation canvas is a labelled section, not a nested `main`.
 - The installed PWA now launches at `/app/chats` instead of the marketing page; signed-out launches are redirected to `/login` by the route guard. Verified in the generated `dist/manifest.webmanifest`.
@@ -189,7 +189,7 @@ Labels are exactly: **Implemented and verified**, **Implemented but unverified**
 | Browser push subscription, permission onboarding, service-worker handlers | Implemented but unverified | VAPID not configured; no device test |
 | Server-side push delivery (`send-push`) with VAPID secrets, expiry cleanup | Implemented but unverified | function/webhook not deployed |
 | Notification click opens correct conversation | Implemented but unverified | service-worker code; not exercised |
-| PWA manifest, icons, standalone mode, install button and guides | Implemented and verified | production build generated manifest/SW/icons, `start_url` verified as `/app/chats`; install flow not run on a device |
+| PWA manifest, icons, standalone mode, install button and guides | Implemented and verified | production build generated manifest/SW/icons, `start_url` now `/` (was `/app/chats`); install flow not run on a device |
 | Update prompt without silent reload; offline banner; offline shell | Implemented and verified | build/SW generation; runtime behavior not device-tested |
 | Settings: profile, account, privacy/blocked, notifications, chats/media, appearance/accessibility, install | Implemented but unverified | settings shell and error state rendered live; content panels need a working schema |
 | Account deletion from settings | Implemented but unverified | Edge Function not deployed |
@@ -209,7 +209,7 @@ Labels are exactly: **Implemented and verified**, **Implemented but unverified**
 ## Required external configuration
 
 1. Supabase URL + publishable/anon key in `.env`.
-2. Apply migrations `0001` → `0006` in order (SQL Editor or `supabase db push`). If a previous attempt failed part-way, start from [supabase/reset-dev.sql](supabase/reset-dev.sql) on a development project rather than re-running a partial file.
+2. Apply migrations `0001` → `0007` in order (SQL Editor or `supabase db push`). If a previous attempt failed part-way, start from [supabase/reset-dev.sql](supabase/reset-dev.sql) on a development project rather than re-running a partial file.
 3. Auth Site URL + redirect URLs (`/login`, `/reset-password`, `/app/**`).
 4. SMTP/email templates and “Confirm email” for production.
 5. Deploy `link-preview` for previews; `delete-account` for deletion; `ice-servers` + TURN for reliable calls; `livekit-token` + LiveKit secrets for group calls; `send-push` + VAPID + database webhook for push.
@@ -238,3 +238,19 @@ Full steps: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/CALLING_SETUP.md]
 3. Add RLS integration tests and a Playwright flow for auth + one conversation + one call screen.
 4. Inspect the authenticated workspace at 1440/768/390 widths in light and dark themes and fix any visual regressions.
 5. Add a scheduled Storage cleanup job for orphaned uploads and deleted-message files.
+
+
+## Update — routing, Vercel and web push fixes
+
+| Problem | Cause | Fix |
+|---|---|---|
+| Vercel `404: NOT_FOUND` on deep links / installed-app launch | No SPA rewrite on Vercel | `vercel.json` rewrites every non-asset path to `index.html`; correct cache headers for `sw.js`, `push-sw.js`, manifest |
+| Home Screen icon opened `/app/chats` | Manifest `start_url` was `/app/chats` (iOS stores it at add time) | `start_url: '/'`; `/` routes signed-in users to `/app/chats` |
+| No route redirects | `/login` etc. stayed reachable when signed in; `from` was ignored after login | `PublicOnly`, `HomeRoute`, `UnknownRoute`, `RouteError`; login returns to the page the user wanted; open-redirect-safe (`safeAppPath`) |
+| `column reference "endpoint" is ambiguous` | RPC parameter named like the column; the first statement was already ambiguous, so the function could never succeed | Migration `0007` (reproduced and verified on PostgreSQL 16 for first save, re-save, account takeover, delete, unauthenticated) |
+| Push could not display some notifications | `renotify: true` without `tag` throws; plain-text payloads had no tag | `push-sw.js` only sets `renotify` with a `tag`; covered by `src/lib/pushSw.test.ts` |
+| Device saved in browser but not on server | Earlier failed save left a browser subscription | Silent `syncPushSubscription()` on sign-in; key-mismatch re-subscribe; wait for an *active* service worker |
+| Push failures invisible | `send-push` swallowed every error except 404/410 | Failures are logged and returned; `pushed_at` stays empty if every device failed; VAPID config errors reported |
+| Notification click | `client.navigate` reloads and is unreliable on iOS | Service worker messages the open app, which navigates client-side; cold start opens the URL |
+
+Not verifiable from here (needs your accounts/devices): the Supabase secrets, the Database Webhook and delivery to a real iPhone. [docs/WEB_PUSH_GUIDE.md](docs/WEB_PUSH_GUIDE.md) walks through each with a check.

@@ -84,7 +84,7 @@ export function SettingsPage() {
                   <button className={styles.choice} onClick={() => profile.refetch()}>Try again</button>
                 </div>
                 {isMissingSchemaObject(profile.error)
-                  ? <p className={styles.hint}>The database schema is out of date. Apply migrations 0001 → 0006 in the Supabase SQL Editor, then try again.</p>
+                  ? <p className={styles.hint}>The database schema is out of date. Apply migrations 0001 → 0007 in the Supabase SQL Editor, then try again.</p>
                   : <p className={styles.hint}>{errorMessage(profile.error)}</p>}
               </div>
             </div>

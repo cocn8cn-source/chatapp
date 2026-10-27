@@ -6,7 +6,7 @@ React 19 · Vite · TypeScript · CSS Modules · Supabase (Auth, Postgres, Realt
 
 No Tailwind, Bootstrap, Next.js or custom application server.
 
-> **Current state:** the application code is complete and the database is installed (`0001` → `0006`): signing in, conversations, sending, replies, reactions and attachments work against the live project. Typecheck, lint, the unit tests and the production build pass. Calls, TURN, LiveKit, email, push and the Edge Functions still need owner-supplied credentials, so those paths are implemented but unverified. Details are in [PROJECT_STATUS.md](PROJECT_STATUS.md).
+> **Current state:** the application code is complete and the database is installed (`0001` → `0007`): signing in, conversations, sending, replies, reactions and attachments work against the live project. Typecheck, lint, the unit tests and the production build pass. Calls, TURN, LiveKit, email, push and the Edge Functions still need owner-supplied credentials, so those paths are implemented but unverified. Details are in [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Quick start
 
@@ -44,6 +44,7 @@ Otherwise apply the migrations **in order** — either with the Supabase CLI (`s
 4. `0004_calls.sql`
 5. `0005_privacy_social_message_actions.sql`
 6. `0006_groups_notifications_calls.sql`
+7. `0007_fix_push_subscription_rpc.sql`
 
 They create the profiles trigger, conversations and messages, attachments and storage buckets, 1:1 calls and signals, privacy/contacts/reactions/receipts/presence, groups, notifications and push subscriptions. `0001` also creates the `avatars` bucket; `0003` the private `chat-media` bucket; `0006` the `group-photos` bucket. Realtime publication entries are part of the same files.
 

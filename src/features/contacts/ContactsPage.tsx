@@ -166,7 +166,7 @@ export function ContactsPage() {
           <div className={styles.error} role="alert">
             <p>Could not load contacts. <button onClick={() => contacts.refetch()}>Retry</button></p>
             {isMissingSchemaObject(contacts.error) && (
-              <p className={styles.hint}>The database schema is out of date. Apply migrations 0001 → 0006 in Supabase, then retry.</p>
+              <p className={styles.hint}>The database schema is out of date. Apply migrations 0001 → 0007 in Supabase, then retry.</p>
             )}
           </div>
         )}

@@ -50,6 +50,7 @@ or by pasting each file into Supabase → SQL Editor:
 | `0004_calls.sql` | 1:1 call state, signals, RLS and locked call RPCs |
 | `0005_privacy_social_message_actions.sql` | Settings, contacts, blocks, reports, privacy helpers, receipts, reactions, pins, stars, typing, presence |
 | `0006_groups_notifications_calls.sql` | Groups and roles, group calls, notifications, push subscriptions, call history |
+| `0007_fix_push_subscription_rpc.sql` | Fixes `column reference "endpoint" is ambiguous` in `save_push_subscription` (web push could never register a device without it) |
 
 Migrations create the storage buckets and add tables to the `supabase_realtime` publication. Do not create the buckets manually; their names are:
 
@@ -62,7 +63,7 @@ If a migration fails because an older object already exists, inspect the actual 
 The SQL Editor executes a pasted file as several statements, so a file that fails half-way can leave the schema partially applied and impossible to re-run. On a development project with no data you want to keep:
 
 1. Run [`supabase/reset-dev.sql`](../supabase/reset-dev.sql) — destructive, drops the `public` schema only (auth users and storage objects survive).
-2. Apply `0001` → `0006` again in order.
+2. Apply `0001` → `0007` again in order.
 3. Run [`supabase/backfill-profiles.sql`](../supabase/backfill-profiles.sql) so accounts that existed before the reset get their `profiles` and `user_settings` rows back, or sign up again with a fresh account.
 
 `supabase db push` wraps each migration in a transaction and records it in `supabase_migrations.schema_migrations`, so prefer it over pasting files when you can link the CLI.
@@ -124,11 +125,13 @@ supabase functions deploy send-push
 supabase functions deploy delete-account
 ```
 
-Edge Functions use `verify_jwt` for user-invoked functions. `send-push` must be callable by the database webhook; it authenticates the webhook with `PUSH_WEBHOOK_SECRET`, and should be deployed with JWT verification disabled for that route **only if** your webhook cannot supply a service JWT. Restrict it by secret header and keep the function private.
+Edge Functions use `verify_jwt` for user-invoked functions. `send-push` is called by the database webhook, which authenticates with the `x-webhook-secret` header (`PUSH_WEBHOOK_SECRET`) rather than a user JWT. Deploy it with `supabase functions deploy send-push --no-verify-jwt`: projects on the newer `sb_publishable_…` keys have no JWT to send, so the gateway would otherwise reject every webhook call.
 
 Link previews fail closed if the function is not deployed; the message still sends and the link remains clickable.
 
 ## 6. Web push notifications
+
+> **Beginner-friendly walk-through with checks and troubleshooting: [WEB_PUSH_GUIDE.md](./WEB_PUSH_GUIDE.md).** The summary below is the reference.
 
 1. Generate VAPID keys:
    ```bash
@@ -143,7 +146,7 @@ Link previews fail closed if the function is not deployed; the message still sen
      VAPID_SUBJECT="mailto:you@example.com" \
      PUSH_WEBHOOK_SECRET="<long random string>"
    ```
-4. Deploy `send-push`.
+4. Deploy `send-push` with `--no-verify-jwt` (see above). `VAPID_SUBJECT` must be a real `mailto:` address or `https://` URL; Apple's push service rejects placeholders.
 5. Supabase → Database → Webhooks → create a webhook:
    - table: `public.notifications`
    - event: `INSERT`
@@ -157,7 +160,7 @@ The notifications row is created and deduplicated by database triggers in `0006`
 
 ### Platform limitations
 - Desktop Chrome/Edge/Firefox and Android Chrome support web push in browser tabs, but installation generally improves reliability.
-- On iOS/iPadOS, web push requires iOS 16.4+ and the app **added to the Home Screen**. Safari in an ordinary tab cannot receive it.
+- On iOS/iPadOS, web push requires iOS 16.4+ and the app **added to the Home Screen**. Safari in an ordinary tab cannot receive it. iOS reads the manifest `start_url` (now `/`) when the icon is added, so remove and re-add an icon created from an older build.
 - Notification permission is requested from a clear user action, never automatically on first load.
 - The service worker does not cache private messages, API responses or media.
 
@@ -173,7 +176,7 @@ npm run build
 
 Upload **`dist/`** to any static host with HTTPS (Cloudflare Pages, Netlify, Vercel static, S3 + CDN, Nginx). Requirements:
 
-- SPA fallback: unknown paths return `index.html` so `/app/chats/...` deep links work.
+- SPA fallback: unknown paths return `index.html` so `/app/chats/...` deep links work. On Vercel this is `vercel.json` (included): without it every deep link or Home Screen launch returns Vercel's `404: NOT_FOUND`. On Netlify/Cloudflare Pages use `/* /index.html 200` / the equivalent.
 - HTTPS is mandatory for service workers, camera/microphone and WebRTC.
 - Serve `.webmanifest` as `application/manifest+json` if your host does not infer it.
 - Vite env vars are baked into the bundle at build time. Changing Supabase, VAPID or LiveKit public values requires a new build.
@@ -190,7 +193,7 @@ A reasonable Content-Security-Policy must allow:
 The build generates `sw.js`, the Workbox runtime and `manifest.webmanifest` with 192/512 icons plus maskable variants. The update prompt never force-reloads; drafts remain on the device. Installation produces a web app, not an IPA/APK:
 
 - **Android Chrome:** menu → Install app / Add to Home screen.
-- **iOS Safari:** Share → Add to Home Screen. Open the installed app to allow push (16.4+).
+- **iOS Safari:** Share → Add to Home Screen. Open the installed app from the new icon to allow push (16.4+). The icon opens the site root `/`; signed-in users are redirected to `/app/chats`.
 - **Desktop:** install icon in the address bar or browser menu.
 
 ## 9. Backups and recovery
@@ -208,7 +211,7 @@ The build generates `sw.js`, the Workbox runtime and `manifest.webmanifest` with
 | “Supabase is not configured” | `.env` missing/renamed; restart Vite or rebuild. Only `VITE_*` values reach the browser. |
 | Signup succeeds but no profile | Migration `0001` not applied, or the `handle_new_user` trigger is missing. |
 | “Could not check the username” | `username_available` RPC missing → apply `0001`. |
-| Chats, People or Settings say the database schema is out of date; PostgREST returns `PGRST202` for `my_conversations`, `my_profile`, `presence_heartbeat` or `call_history` | Migrations are missing or only partially applied. Do not paste individual statements from the middle of a file. On a development project with no user data, reset the database and run `0001` → `0006` in order; otherwise compare the live objects with the migrations before adding a corrective migration. |
+| Chats, People or Settings say the database schema is out of date; PostgREST returns `PGRST202` for `my_conversations`, `my_profile`, `presence_heartbeat` or `call_history` | Migrations are missing or only partially applied. Do not paste individual statements from the middle of a file. On a development project with no user data, reset the database and run `0001` → `0007` in order; otherwise compare the live objects with the migrations before adding a corrective migration. |
 | Some tables exist but their RPCs return 404 | The schema was applied from an older/reordered version of the migrations. Rebuild it from the current files rather than mixing versions. |
 | Everything loads but chats are empty | RLS is working; the user may have no conversations. Create one with a second account. |
 | Messages do not arrive live | Realtime publication missing the table, or the channel is not authorised. Re-check the migration’s `alter publication` lines. |
@@ -216,7 +219,9 @@ The build generates `sw.js`, the Workbox runtime and `manifest.webmanifest` with
 | Avatar shows initials only | `0005` made `avatars` private. Signed URLs require the storage select policy; re-run `0005` and confirm. |
 | Calls connect only on the same network | No TURN relay. Configure `ice-servers` and test again. |
 | Group call says not configured | Deploy `livekit-token`, set LiveKit secrets, and confirm there is an active `group_calls` row. |
-| Push never arrives | Check permission, VAPID public key at build time, `send-push` deployment and the database webhook header. On iOS, install to the Home Screen. |
+| Enabling notifications shows `column reference "endpoint" is ambiguous` | Migration `0007` is not applied. Run only `0007_fix_push_subscription_rpc.sql` in the SQL Editor. |
+| Push never arrives | Follow [WEB_PUSH_GUIDE.md](./WEB_PUSH_GUIDE.md) → "If nothing arrives". Check permission, VAPID public key at build time (Vercel env + redeploy), `send-push` deployment (`--no-verify-jwt`), the webhook header, and the function logs. On iOS, install to the Home Screen. |
+| Vercel shows `404: NOT_FOUND` on `/app/...` or when launching the installed app | `vercel.json` is missing from the deployed commit. |
 | Service worker serves an old build | The app offers a reload prompt by design. Clear site data only if the prompt is stuck; never silently skip waiting. |
 | 401/403 from an Edge Function | JWT not forwarded, or the caller is not a conversation member. Inspect function logs; do not disable RLS. |
 

@@ -1,26 +1,24 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { z } from 'zod';
 import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/stores/auth';
 import { Button } from '@/components/Button/Button';
 import { TextField } from '@/components/TextField/TextField';
 import { AuthLayout } from './AuthLayout';
 import { loginSchema } from './schemas';
 import { authErrorMessage } from './authErrors';
+import { fromState } from './redirect';
 import styles from './Auth.module.css';
 
 type Values = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const session = useAuth((s) => s.session);
+  const location = useLocation();
   const [formError, setFormError] = useState<string | null>(null);
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(loginSchema) });
-
-  if (session) return <Navigate to="/app/chats" replace />;
 
   const onSubmit = async (v: Values) => {
     setFormError(null);
@@ -30,7 +28,8 @@ export function LoginPage() {
       setFormError(authErrorMessage(error));
       return;
     }
-    navigate('/app/chats', { replace: true });
+    // Back to the page that sent them here (RequireAuth), else the inbox.
+    navigate(fromState(location.state), { replace: true });
   };
 
   return (

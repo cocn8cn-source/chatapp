@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Bell, BellOff, Check, Info } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import { disablePush, enablePush, publicPushKey, pushStatus, pushSupported, type PushStatus } from '@/lib/push';
+import { usePwa } from '@/features/pwa/pwaStore';
 import styles from './EnableNotifications.module.css';
 
 type Props = { variant?: 'settings' | 'banner'; onDismiss?: () => void };
@@ -11,6 +12,7 @@ export function EnableNotifications({ variant = 'settings', onDismiss }: Props) 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const configured = !!publicPushKey();
+  const { iosGuidance, installed } = usePwa();
 
   useEffect(() => {
     void pushStatus().then(setStatus).catch(() => setStatus('unsupported'));
@@ -36,11 +38,19 @@ export function EnableNotifications({ variant = 'settings', onDismiss }: Props) 
     return (
       <div className={styles.info}>
         <Info size={16} aria-hidden />
-        <p>
-          Browser push is not available in this browser or tab. On iPhone and iPad, add ChatSpace to the Home Screen
-          (Share → Add to Home Screen) and open it there. Camera, microphone and notifications still depend on device
-          and browser support.
-        </p>
+        {iosGuidance && !installed ? (
+          <p>
+            On iPhone and iPad, notifications only work in the installed app, not in a Safari tab. Tap Share → Add to Home
+            Screen → Add, then open ChatSpace from the new Home Screen icon, sign in, and turn notifications on there.
+            Needs iOS 16.4 or newer.
+          </p>
+        ) : (
+          <p>
+            Browser push is not available in this browser or tab. On iPhone and iPad, add ChatSpace to the Home Screen
+            (Share → Add to Home Screen) and open it there. Camera, microphone and notifications still depend on device
+            and browser support.
+          </p>
+        )}
       </div>
     );
   }

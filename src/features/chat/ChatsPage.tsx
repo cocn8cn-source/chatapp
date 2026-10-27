@@ -87,7 +87,7 @@ export function ChatsPage() {
               {isMissingSchemaObject(convs.error) && (
                 <p className={styles.errorHint}>
                   This project’s database is missing the ChatSpace functions. Apply the migrations in
-                  <code> supabase/migrations </code> (0001 → 0006) in the Supabase SQL Editor, then retry.
+                  <code> supabase/migrations </code> (0001 → 0007) in the Supabase SQL Editor, then retry.
                 </p>
               )}
             </div>

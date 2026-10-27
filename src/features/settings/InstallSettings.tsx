@@ -52,10 +52,12 @@ export function InstallSettings() {
         <div className={styles.divider} />
         <div className={styles.subhead}><Smartphone size={16} aria-hidden /> Install on iPhone or iPad</div>
         <ol className={styles.steps}>
-          <li>Open ChatSpace in Safari. Web push requires the installed Home Screen app, not a normal tab.</li>
-          <li>Tap the Share button, scroll, then tap <strong>Add to Home Screen</strong>.</li>
-          <li>Confirm the name and tap <strong>Add</strong>. Open ChatSpace from the Home Screen.</li>
+          <li>Open ChatSpace in <strong>Safari</strong> (iOS 16.4 or newer). Web push only works in the installed Home Screen app, not in a normal tab.</li>
+          <li>Tap the Share button, scroll, then tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+          <li>Close Safari and open ChatSpace from the <strong>new Home Screen icon</strong>. Sign in there.</li>
+          <li>Go to Settings → Notifications → <strong>Enable notifications</strong> and tap Allow.</li>
         </ol>
+        <p className={styles.hint}>Already added it before? Press and hold the old icon, remove it, and add it again so iPhone picks up the latest settings.</p>
         {iosGuidance && <p className={styles.hint}>This device identifies as iOS/iPadOS. Notifications still depend on the iOS version and Safari support.</p>}
 
         <div className={styles.divider} />

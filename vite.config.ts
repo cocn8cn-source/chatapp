@@ -17,9 +17,10 @@ export default defineConfig({
         name: 'ChatSpace — messages, calls, together',
         short_name: 'ChatSpace',
         description: 'Private conversations, group chats, media, voice notes and calls — installable from your browser.',
-        // Launch the installed app straight into the inbox; signed-out users are
-        // redirected to /login by RequireAuth.
-        start_url: '/app/chats',
+        // Always launch at the site root. iOS "Add to Home Screen" stores this exact URL.
+        // The root route sends signed-in users to /app/chats and shows the welcome page
+        // to everyone else, so one stable URL works for every state (and never 404s).
+        start_url: '/',
         scope: '/',
         display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'minimal-ui'],
@@ -45,6 +46,9 @@ export default defineConfig({
         // Static shell only. Private API, realtime and storage responses are never cached.
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: '/index.html',
+        // Never answer these with the app shell: a missing hashed asset or the push worker
+        // must fail honestly instead of returning HTML.
+        navigateFallbackDenylist: [/^\/assets\//, /^\/push-sw\.js$/, /^\/sw\.js$/, /\.[a-z0-9]{2,5}$/i],
         importScripts: ['push-sw.js'],
         cleanupOutdatedCaches: true,
         runtimeCaching: [],
