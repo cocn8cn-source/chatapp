@@ -1,0 +1,4 @@
+.group { display: inline-flex; padding: var(--s-1); gap: var(--s-1); background: var(--surface-2); border: var(--bw) solid var(--border); border-radius: var(--r-pill); }
+.opt { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--h-control-sm); padding: 0 var(--s-4); border: 0; border-radius: var(--r-pill); background: transparent; font-weight: 500; color: var(--text-muted); }
+.opt[aria-checked='true'] { background: var(--inverse); color: var(--on-inverse); }
+.opt:hover:not([aria-checked='true']) { background: var(--hover); }

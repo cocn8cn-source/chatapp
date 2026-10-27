@@ -1,0 +1,15 @@
+.btn {
+  flex: none; width: var(--hit); height: var(--hit); display: inline-grid; place-items: center;
+  border-radius: var(--r-pill); border: var(--bw) solid transparent; background: transparent; color: var(--text);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.btn:hover:not(:disabled) { background: var(--hover); }
+.btn[aria-pressed='true'] { background: var(--inverse); color: var(--on-inverse); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.sm { width: var(--h-control-sm); height: var(--h-control-sm); }
+.dark { background: var(--inverse); color: var(--on-inverse); }
+.dark:hover:not(:disabled) { opacity: 0.9; background: var(--inverse); }
+.danger { color: var(--error); }
+.danger:hover:not(:disabled) { background: color-mix(in srgb, var(--error) 12%, transparent); }
+.accent { background: var(--accent); color: var(--on-accent); border-color: var(--inverse); }
+.accent:hover:not(:disabled) { background: var(--accent); filter: brightness(0.96); }

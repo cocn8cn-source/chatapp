@@ -1,0 +1,8 @@
+.field { display: grid; gap: var(--s-1); }
+.label { font-size: var(--fs-small); font-weight: 600; }
+.select {
+  min-height: var(--h-control); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: var(--bw) solid var(--border-strong); background: var(--surface); color: var(--text);
+}
+.select:focus-visible { border-color: var(--focus); outline-offset: 0; }
+.hint { color: var(--text-muted); font-size: var(--fs-small); }

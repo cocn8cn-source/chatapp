@@ -1,0 +1,14 @@
+.form { display: grid; gap: var(--s-4); }
+.reasons { border: 0; margin: 0; padding: 0; display: grid; gap: var(--s-1); }
+.reasons legend { font-size: var(--fs-small); font-weight: 650; margin-bottom: var(--s-2); }
+.reasons label { display: flex; align-items: center; gap: var(--s-2); min-height: 2.5rem; padding: var(--s-1) var(--s-2); border-radius: var(--r-sm); cursor: pointer; }
+.reasons label:hover { background: var(--hover); }
+.reasons input { accent-color: var(--inverse); width: 1.05rem; height: 1.05rem; }
+.details { display: grid; gap: var(--s-1); font-size: var(--fs-small); font-weight: 600; }
+.details em { font-style: normal; color: var(--text-muted); font-weight: 400; }
+.details textarea {
+  border-radius: var(--r-md); border: var(--bw) solid var(--border-strong); background: var(--bg);
+  padding: var(--s-3); resize: vertical; min-height: 6rem; font-weight: 400;
+}
+.err { color: var(--error); font-size: var(--fs-small); }
+.ok { color: var(--success); line-height: 1.6; }

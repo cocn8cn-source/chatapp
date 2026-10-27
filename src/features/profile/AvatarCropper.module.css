@@ -1,0 +1,9 @@
+.wrap { display: grid; justify-items: center; gap: var(--s-3); }
+.stage { position: relative; width: min(100%, 18rem); aspect-ratio: 1; overflow: hidden; border-radius: var(--r-md); }
+.canvas { width: 100%; height: 100%; border-radius: var(--r-md); cursor: grab; touch-action: none; display: block; }
+.canvas:active { cursor: grabbing; }
+.mask { position: absolute; inset: 9%; pointer-events: none; border-radius: 50%; border: 2px solid var(--c-ivory); box-shadow: 0 0 0 999px rgb(0 0 0 / 38%); }
+.zoom { width: 100%; display: flex; align-items: center; gap: var(--s-3); font-size: var(--fs-small); font-weight: 600; }
+.zoom input { flex: 1; accent-color: var(--accent); }
+.reset { border: 0; background: transparent; text-decoration: underline; font-size: var(--fs-small); color: var(--text-muted); }
+.err { color: var(--error); font-size: var(--fs-small); }

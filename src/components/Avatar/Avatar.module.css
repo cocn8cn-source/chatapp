@@ -1,0 +1,14 @@
+.wrap { position: relative; flex: none; display: inline-grid; }
+.avatar {
+  width: 100%; height: 100%; display: grid; place-items: center; border-radius: var(--r-pill);
+  background: var(--c-pink); color: var(--c-charcoal); font-weight: 700; overflow: hidden;
+  border: var(--bw) solid var(--border-strong); letter-spacing: -0.02em;
+}
+.avatar.group { background: var(--c-mint); border-radius: 34%; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.online, .offline {
+  position: absolute; right: -1px; bottom: -1px; width: 30%; height: 30%; min-width: 9px; min-height: 9px;
+  border-radius: var(--r-pill); border: 2px solid var(--surface);
+}
+.online { background: var(--online); }
+.offline { background: var(--border-strong); }

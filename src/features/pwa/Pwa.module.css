@@ -1,0 +1,21 @@
+.offline, .update, .ready {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 130;
+  width: min(calc(100vw - 2rem), 38rem); display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-2) var(--s-3); border-radius: var(--r-md); border: var(--bw) solid var(--border-strong);
+  background: var(--surface-raised); color: var(--text); box-shadow: var(--shadow-md); font-size: var(--fs-small);
+}
+.offline { top: calc(var(--s-3) + var(--safe-top)); border-color: var(--warning); }
+.offline svg { color: var(--warning); flex: none; }
+.update { bottom: calc(var(--s-4) + var(--safe-bottom)); }
+.update > svg { color: var(--success); flex: none; }
+.update > div { display: grid; gap: 1px; flex: 1; min-width: 0; }
+.update strong { font-size: var(--fs-small); }
+.update span { color: var(--text-muted); font-size: var(--fs-meta); }
+.ready { bottom: calc(var(--s-4) + var(--safe-bottom)); background: var(--inverse); color: var(--on-inverse); border-color: var(--inverse); }
+.ready span { flex: 1; }
+.ready > svg { flex: none; }
+.dismiss { flex: none; width: 1.75rem; height: 1.75rem; display: grid; place-items: center; border: 0; border-radius: var(--r-pill); background: transparent; color: inherit; }
+.dismiss:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+@media (max-width: 47.99rem) {
+  .update, .ready { bottom: calc(4.75rem + var(--safe-bottom)); }
+}

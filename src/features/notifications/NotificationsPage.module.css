@@ -1,0 +1,29 @@
+.page { flex: 1; min-width: 0; overflow-y: auto; display: grid; align-content: start; gap: var(--s-4); padding: calc(var(--s-5) + var(--safe-top)) var(--s-5) calc(var(--s-5) + var(--safe-bottom)); }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; max-width: 48rem; }
+.head h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em; }
+.head p { color: var(--text-muted); font-size: var(--fs-small); }
+.tabs { display: flex; gap: var(--s-2); }
+.tabs button { min-height: var(--h-control-sm); padding: 0 var(--s-4); border-radius: var(--r-pill); border: var(--bw) solid var(--border-strong); background: var(--surface); font-weight: 550; }
+.tabs button[aria-pressed='true'] { background: var(--inverse); color: var(--on-inverse); border-color: var(--inverse); }
+.list { list-style: none; margin: 0; padding: 0; display: grid; max-width: 48rem; gap: var(--s-1); }
+.row { display: flex; align-items: stretch; border-radius: var(--r-md); border: var(--bw) solid transparent; }
+.row[data-unread='true'] { background: var(--surface); border-color: var(--border); }
+.row:hover { background: var(--hover); }
+.main { flex: 1; display: flex; align-items: flex-start; gap: var(--s-3); padding: var(--s-3); border: 0; background: transparent; text-align: left; min-width: 0; }
+.icon { flex: none; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: var(--r-pill); background: var(--surface-2); }
+.row[data-unread='true'] .icon { background: var(--accent-soft); }
+.copy { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.top { display: flex; justify-content: space-between; gap: var(--s-3); }
+.top strong { font-size: var(--fs-small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top time { color: var(--text-muted); font-size: var(--fs-meta); white-space: nowrap; }
+.body { color: var(--text-muted); font-size: var(--fs-small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dot { flex: none; width: 0.5rem; height: 0.5rem; border-radius: var(--r-pill); background: var(--success); margin-top: 0.7rem; }
+.delete { flex: none; width: 2.5rem; border: 0; background: transparent; color: var(--text-muted); border-radius: var(--r-md); }
+.delete:hover { color: var(--error); background: var(--error-soft); }
+.loading { display: grid; gap: var(--s-2); max-width: 48rem; }
+.err { color: var(--error); font-size: var(--fs-small); }
+.err button { border: 0; background: transparent; text-decoration: underline; color: inherit; }
+@media (max-width: 47.99rem) {
+  .page { padding: calc(var(--s-4) + var(--safe-top)) var(--s-3) calc(var(--s-4) + var(--safe-bottom)); }
+  .top time { display: none; }
+}

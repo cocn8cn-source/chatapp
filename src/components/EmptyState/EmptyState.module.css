@@ -1,0 +1,9 @@
+.empty { display: grid; justify-items: center; text-align: center; gap: var(--s-3); padding: var(--s-6) var(--s-4); color: var(--text); }
+.empty svg { color: var(--text); }
+.copy { display: grid; gap: var(--s-1); max-width: 34rem; }
+.copy h2 { font-size: var(--fs-h2); font-weight: 750; letter-spacing: -0.02em; }
+.copy p { color: var(--text-muted); font-size: var(--fs-small); line-height: 1.55; }
+.action { margin-top: var(--s-1); display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: center; }
+.compact { padding: var(--s-4) var(--s-3); gap: var(--s-2); }
+.compact .copy h2 { font-size: var(--fs-h3); }
+.compact .copy p { font-size: var(--fs-meta); }

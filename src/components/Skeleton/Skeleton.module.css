@@ -1,0 +1,11 @@
+.bar { display: block; background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%); background-size: 200% 100%; animation: shimmer 1.6s linear infinite; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.list { display: grid; gap: var(--s-2); padding: var(--s-2) 0; }
+.row { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-3); }
+.avatar { flex: none; width: 2.75rem; height: 2.75rem; border-radius: var(--r-pill); background: var(--surface-2); }
+.lines { flex: 1; display: grid; gap: var(--s-2); }
+.messages { display: grid; gap: var(--s-3); align-content: start; }
+.messages > span { display: block; }
+.mine { justify-self: end; }
+.theirs { justify-self: start; }
+@media (prefers-reduced-motion: reduce) { .bar { animation: none; } }

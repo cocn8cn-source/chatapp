@@ -1,0 +1,14 @@
+.sheet { display: grid; gap: var(--s-4); }
+.reactions { display: flex; justify-content: space-between; gap: var(--s-1); background: var(--surface-2); border-radius: var(--r-pill); padding: var(--s-1); }
+.emoji { flex: 1; min-width: 2.5rem; min-height: 2.75rem; border: 0; border-radius: var(--r-pill); background: transparent; font-size: 1.4rem; line-height: 1; }
+.emoji:hover, .emoji:focus-visible { background: var(--surface); transform: translateY(-1px); }
+.actions { display: grid; }
+.actions button {
+  display: flex; align-items: center; gap: var(--s-3); width: 100%; min-height: var(--hit);
+  padding: var(--s-2) var(--s-2); border: 0; border-radius: var(--r-sm); background: transparent;
+  text-align: left; font-weight: 500;
+}
+.actions button:hover:not(:disabled) { background: var(--hover); }
+.actions button:disabled { opacity: 0.4; }
+.actions .danger { color: var(--error); }
+.note { color: var(--success); font-size: var(--fs-small); text-align: center; }

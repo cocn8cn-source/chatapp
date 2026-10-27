@@ -1,0 +1,99 @@
+.scrim { position: fixed; inset: 0; z-index: 110; display: grid; place-items: center; padding: var(--s-4); background: var(--overlay); }
+.errorCard {
+  width: min(100%, 24rem); display: grid; justify-items: center; gap: var(--s-3); text-align: center;
+  background: var(--surface); border: var(--bw) solid var(--border-strong); border-radius: var(--r-lg);
+  padding: var(--s-6) var(--s-5); box-shadow: var(--shadow-lg);
+}
+.errorCard h2 { font-size: var(--fs-h2); font-weight: 750; letter-spacing: -0.02em; }
+.errorCard p { color: var(--text-muted); font-size: var(--fs-small); line-height: 1.55; }
+.errorIcon { width: 3rem; height: 3rem; display: grid; place-items: center; border-radius: var(--r-pill); background: var(--error-soft); color: var(--error); }
+.pulse { width: 2.5rem; height: 2.5rem; border-radius: var(--r-pill); background: var(--accent); animation: pulse 1.3s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(0.85); opacity: 0.55; } }
+.primary, .secondary { min-height: var(--h-control); padding: 0 var(--s-5); border-radius: var(--r-pill); border: var(--bw) solid var(--inverse); background: var(--accent); color: var(--on-accent); font-weight: 650; }
+.secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.full {
+  position: fixed; inset: 0; z-index: 110; background: #101010; color: var(--c-ivory);
+  display: flex; flex-direction: column; padding: calc(var(--s-3) + var(--safe-top)) var(--s-4) calc(var(--s-3) + var(--safe-bottom));
+  overflow: hidden;
+}
+.head { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0 var(--s-4); }
+.head > div { display: grid; gap: 1px; min-width: 0; }
+.head strong { font-size: var(--fs-h3); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.head span { color: #bdb9ab; font-size: var(--fs-meta); }
+.groupIcon { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--r-md); background: #2b2b26; color: var(--c-ivory); flex: none; }
+.reconnect { margin-left: auto; color: var(--c-yellow); font-size: var(--fs-small); font-weight: 650; }
+.audioNotice {
+  align-self: center; display: inline-flex; align-items: center; gap: var(--s-2); margin: 0 0 var(--s-3);
+  padding: var(--s-2) var(--s-4); border-radius: var(--r-pill); border: 1px solid var(--c-yellow);
+  background: transparent; color: var(--c-yellow); font-weight: 600;
+}
+.grid {
+  flex: 1; min-height: 0; display: grid; gap: var(--s-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  align-content: center; overflow-y: auto;
+}
+.grid[data-count='1'] { grid-template-columns: minmax(0, 52rem); justify-content: center; }
+.grid[data-count='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tile {
+  position: relative; min-height: 10rem; aspect-ratio: 16 / 10; display: grid; place-items: center;
+  border-radius: var(--r-lg); overflow: hidden; background: #232320; border: 2px solid #35352f;
+  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.speaking { border-color: var(--c-mint); }
+.local { border-color: #56564a; }
+.video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #080808; }
+.local .video { transform: scaleX(-1); }
+.avatarWrap { display: grid; place-items: center; }
+.avatar {
+  width: clamp(3.5rem, 9vw, 5.5rem); height: clamp(3.5rem, 9vw, 5.5rem); border-radius: 34%;
+  display: grid; place-items: center; background: var(--c-pink); color: var(--c-charcoal);
+  font-weight: 800; font-size: clamp(1.25rem, 3vw, 1.8rem); letter-spacing: -0.02em;
+}
+.name {
+  position: absolute; left: var(--s-3); bottom: var(--s-3); max-width: calc(100% - 4.5rem);
+  padding: 0.15rem 0.55rem; border-radius: var(--r-pill); background: rgb(0 0 0 / 55%);
+  color: var(--c-ivory); font-size: var(--fs-meta); font-weight: 600; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.mic {
+  position: absolute; right: var(--s-3); bottom: var(--s-3); width: 1.6rem; height: 1.6rem;
+  display: grid; place-items: center; border-radius: var(--r-pill); background: rgb(0 0 0 / 55%);
+  color: var(--c-ivory);
+}
+.controls {
+  display: flex; align-items: center; justify-content: center; gap: var(--s-3); flex-wrap: wrap;
+  padding: var(--s-4) 0 var(--s-2);
+}
+.control, .devices summary {
+  width: 3.5rem; height: 3.5rem; display: grid; place-items: center; border-radius: var(--r-pill);
+  border: 1px solid #55554a; background: #242420; color: var(--c-ivory); list-style: none; cursor: pointer;
+}
+.control[data-off='true'] { background: var(--c-ivory); color: var(--c-charcoal); }
+.end {
+  min-width: 4.5rem; height: 4rem; padding: 0 var(--s-4); display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--s-2); border-radius: var(--r-pill); border: 1px solid var(--error); background: var(--error);
+  color: var(--c-white); font-weight: 650;
+}
+.end span { font-size: var(--fs-small); }
+.devices { position: relative; }
+.devices summary::-webkit-details-marker { display: none; }
+.devicesMenu {
+  position: absolute; bottom: 4.5rem; left: 50%; transform: translateX(-50%); width: min(80vw, 20rem);
+  display: grid; gap: var(--s-3); padding: var(--s-4); background: var(--c-ivory); color: var(--c-charcoal);
+  border-radius: var(--r-md); font-size: var(--fs-small); z-index: 2;
+}
+.devicesMenu label { display: grid; gap: var(--s-1); font-weight: 650; }
+.devicesMenu select { min-height: var(--h-control-sm); border-radius: var(--r-sm); border: 1px solid #bbb7a5; background: #fff; padding: 0 var(--s-2); }
+.footnote { display: flex; align-items: center; justify-content: center; gap: var(--s-1); color: #8f8c80; font-size: 0.6875rem; }
+@media (max-width: 47.99rem) {
+  .full { padding-left: var(--s-2); padding-right: var(--s-2); }
+  .grid { grid-template-columns: 1fr; align-content: start; }
+  .grid[data-count='2'] { grid-template-columns: 1fr 1fr; }
+  .grid[data-count='2'] .tile { min-height: 7rem; aspect-ratio: 3 / 4; }
+  .tile { aspect-ratio: 4 / 5; min-height: 9rem; }
+  .grid[data-count='1'] .tile { aspect-ratio: 16 / 10; min-height: 12rem; }
+  .controls { gap: var(--s-2); }
+  .control, .devices summary { width: 3.1rem; height: 3.1rem; }
+  .end { height: 3.5rem; }
+  .footnote { display: none; }
+}

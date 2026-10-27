@@ -1,0 +1,24 @@
+.page {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: var(--s-4);
+  padding: calc(var(--s-5) + var(--safe-top)) var(--s-5) calc(var(--s-6) + var(--safe-bottom));
+}
+.back { display: inline-flex; align-items: center; gap: var(--s-2); width: fit-content; font-size: var(--fs-small); text-decoration: none; color: var(--text-muted); }
+.back:hover { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.card {
+  width: min(100%, 46rem);
+  border: var(--bw) solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  padding: var(--s-5);
+}
+.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--fs-meta); font-weight: 700; color: var(--text-muted); margin-bottom: var(--s-4); }
+.err { color: var(--error); }
+@media (max-width: 47.99rem) {
+  .page { padding: calc(var(--s-4) + var(--safe-top)) var(--s-3) calc(var(--s-4) + var(--safe-bottom)); }
+  .card { padding: var(--s-4); }
+}

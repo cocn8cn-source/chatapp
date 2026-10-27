@@ -1,0 +1,8 @@
+.field { display: grid; gap: var(--s-1); }
+.label { font-size: var(--fs-small); font-weight: 600; }
+.input { min-height: var(--h-control); padding: 0 var(--s-4); border-radius: var(--r-md); border: var(--bw) solid var(--border-strong); background: var(--surface); }
+.input:focus-visible { outline-offset: 0; border-color: var(--focus); }
+.input[aria-invalid='true'] { border-color: var(--error); }
+.input:disabled { background: var(--disabled-bg); color: var(--disabled-text); }
+.error { color: var(--error); font-size: var(--fs-small); }
+.hint { color: var(--text-muted); font-size: var(--fs-small); }
