@@ -20,7 +20,6 @@ export function SavedPage() {
     <section className={styles.page} aria-labelledby="saved-title">
       <header className={styles.head}>
         <Link to="/app/chats" className={styles.back}><ArrowLeft size={16} aria-hidden /> Chats</Link>
-        <p className={styles.eyebrow}>Your collection</p>
         <h1 id="saved-title">Saved messages</h1>
         <p className={styles.lede}>Messages you star stay here until you remove them. Saved messages are private to your account.</p>
       </header>

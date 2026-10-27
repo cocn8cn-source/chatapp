@@ -16,13 +16,6 @@
   align-items: start;
 }
 .head { grid-column: 1 / -1; display: grid; gap: var(--s-2); max-width: 48rem; }
-.eyebrow {
-  font-size: var(--fs-meta);
-  font-weight: 750;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
 .head h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.035em; }
 .lede { color: var(--text-muted); font-size: var(--fs-small); max-width: 62ch; line-height: 1.55; }
 

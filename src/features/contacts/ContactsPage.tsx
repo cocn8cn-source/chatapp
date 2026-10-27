@@ -124,7 +124,6 @@ export function ContactsPage() {
     <section className={styles.page}>
       <header className={styles.head}>
         <div>
-          <p className={styles.eyebrow}>People</p>
           <h1>Your circle</h1>
           <p className={styles.lede}>Find people by username, accept invitations, and keep track of who can reach you.</p>
         </div>

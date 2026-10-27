@@ -1,4 +1,6 @@
-// Generates ChatSpace PNG icons without image dependencies.
+// Legacy geometric icon generator. The shipped icons are built from the supplied 3D brand
+// render by scripts/build-brand-assets.mjs; running this file overwrites them with the old
+// flat mark, so only use it if you deliberately want that artwork back.
 // Run: node scripts/generate-icons.mjs
 import { deflateSync } from 'node:zlib';
 import { mkdirSync, writeFileSync } from 'node:fs';

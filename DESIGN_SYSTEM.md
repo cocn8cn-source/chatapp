@@ -89,6 +89,12 @@ Rules:
 
 ## 5. Components
 
+### Brand mark
+- The supplied 3D chat-bubble renders ship as `/brand/logo-black.png` (black bubble) and `/brand/logo-white.png` (white bubble, for dark surfaces), both 256×256 with transparent padding trimmed.
+- [`Logo`](src/components/Logo/Logo.tsx) reads the resolved theme from `<html data-theme>` and re-picks the render when it changes; pass `tone="dark"` on surfaces that stay charcoal in both themes (the desktop rail and the auth aside). No monogram tile, rotation or drop shadow behind it.
+- The mark appears at 44px in the rail, 32px in the welcome and auth brands and 26px in the compact auth header, always beside the ChatSpace wordmark except in the rail.
+- Favicon, Apple touch icon and PWA icons are composited from the white render on a charcoal tile: `node scripts/build-brand-assets.mjs <white.png> <black.png>`. `scripts/generate-icons.mjs` is the legacy flat generator and must not be run over the current icons.
+
 ### Buttons
 - Primary: yellow fill, charcoal text, 1.5px charcoal border, pill radius, 44px height.
 - Secondary: surface fill, strong border.

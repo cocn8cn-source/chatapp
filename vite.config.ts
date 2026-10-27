@@ -11,7 +11,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt', // never silently reload and destroy unsent drafts
       injectRegister: false,
-      includeAssets: ['icon.svg', 'icons/apple-touch-icon.png'],
+      includeAssets: ['icons/apple-touch-icon.png', 'icons/favicon-32.png', 'brand/logo-white.png', 'brand/logo-black.png'],
       manifest: {
         id: '/',
         name: 'ChatSpace — messages, calls, together',

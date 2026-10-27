@@ -4,7 +4,6 @@
   max-width: 58rem;
 }
 .head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
-.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--fs-meta); font-weight: 700; color: var(--text-muted); }
 .head h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em; margin-top: var(--s-1); }
 .lede { color: var(--text-muted); max-width: 40ch; font-size: var(--fs-small); margin-top: var(--s-1); }
 .back { font-size: var(--fs-small); text-decoration: underline; text-underline-offset: 3px; padding-top: var(--s-2); }

@@ -10,11 +10,13 @@ import styles from './Logo.module.css';
 function subscribe(onChange: () => void) {
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  const query = window.matchMedia('(prefers-color-scheme: dark)');
-  query.addEventListener('change', onChange);
+  const query = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
+  query?.addEventListener('change', onChange);
   return () => {
     observer.disconnect();
-    query.removeEventListener('change', onChange);
+    query?.removeEventListener('change', onChange);
   };
 }
 

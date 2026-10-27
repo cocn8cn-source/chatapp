@@ -17,8 +17,7 @@ export function ProfilePage() {
     <section className={styles.page} aria-labelledby="profile-title">
       <Link to="/app/people" className={styles.back}><ArrowLeft size={16} aria-hidden /> Back to People</Link>
       <div className={styles.card}>
-        <p className={styles.eyebrow}>Profile</p>
-        <h1 id="profile-title" className="sr-only">Profile</h1>
+        <h1 id="profile-title" className={styles.eyebrow}>Profile</h1>
         <ProfileView userId={userId} />
       </div>
     </section>

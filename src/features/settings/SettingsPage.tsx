@@ -48,7 +48,6 @@ export function SettingsPage() {
     <section className={styles.page} ref={page} aria-labelledby="settings-title">
       <div className={styles.wrap}>
         <header className={styles.head}>
-          <p className={styles.eyebrow}>Your account</p>
           <h1 id="settings-title">Settings</h1>
           <p className={styles.lede}>Make ChatSpace yours: profile, privacy, notifications, media, appearance and installation.</p>
         </header>

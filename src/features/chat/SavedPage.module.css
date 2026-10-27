@@ -11,7 +11,6 @@
 .head { display: grid; gap: var(--s-1); margin-bottom: var(--s-2); }
 .back { display: inline-flex; align-items: center; gap: var(--s-2); width: fit-content; font-size: var(--fs-small); text-decoration: none; color: var(--text-muted); margin-bottom: var(--s-3); }
 .back:hover { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
-.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--fs-meta); font-weight: 700; color: var(--text-muted); }
 .head h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.035em; }
 .lede { color: var(--text-muted); font-size: var(--fs-small); max-width: 58ch; line-height: 1.55; }
 .list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); }

@@ -55,7 +55,13 @@ The conversation screen was reviewed in the running app in both themes and rebui
 5. **The view drifted when media finished loading.** Images and videos change the scroll height after load, leaving the newest message below the fold. A `ResizeObserver` now keeps the view pinned while the user is at the bottom.
 6. **The message actions trigger was a 17px dot.** Reply, react, save and delete all sit behind that “…” button, so it now has a 28px target with an 18px glyph (24px inside the media timestamp pill, 16px glyph).
 
-Checked with the live DOM in the running app: no horizontal overflow at 1600, 1440 and 433 CSS pixels (`scrollWidth === clientWidth`), and the media bubble, its radius and its overlay measured correctly at each width. `typecheck`, `lint`, **15 test files / 47 tests** and `build` all pass.
+### Brand and headings (2026-10-27)
+
+- **The supplied 3D logo replaced the letter monogram.** The white-bubble render is used on dark surfaces and the black-bubble render on light ones, chosen from the resolved theme by [`Logo`](src/components/Logo/Logo.tsx) (rail at 44px, welcome/auth at 26–32px). The rail now shows the artwork itself instead of a yellow “C” tile.
+- **Favicon and PWA icons were rebuilt from the same artwork** on a charcoal tile, with a dedicated maskable safe area: `node scripts/build-brand-assets.mjs <white.png> <black.png>` (dependency-free PNG decode/trim/box-downscale/composite). The legacy `generate-icons.mjs` is marked as superseded.
+- **Duplicate page labels were removed.** “Messages” above “Chats”, “People” above “Your circle”, “Your account” above “Settings” and “Your collection” above “Saved messages” each repeated the page title; each screen now leads with its single heading and description. The profile page no longer announces “Profile” twice (a visible label plus a hidden `h1`) — the label is the heading now.
+
+Checked with the live DOM in the running app: no horizontal overflow at 1600, 1440 and 433 CSS pixels (`scrollWidth === clientWidth`), and the media bubble, its radius and its overlay measured correctly at each width. The brand marks load at 256×256 and swap black↔white with `data-theme`, both in the browser and in a unit test. `typecheck`, `lint`, **16 test files / 50 tests** and `build` all pass.
 
 ## What was actually run in this environment
 

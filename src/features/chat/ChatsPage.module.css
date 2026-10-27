@@ -15,13 +15,6 @@
   gap: var(--s-3);
   padding: calc(var(--s-5) + var(--safe-top)) var(--s-4) var(--s-3);
 }
-.eyebrow {
-  font-size: var(--fs-meta);
-  font-weight: 750;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
 .h {
   display: flex;
   align-items: center;
